@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>vcmamrob</name>
+  <version>1.0.0</version>
+  <description>Walking cane robot.</description>
+
+  <maintainer email="bausanomichal@gmail.com">Michael Bausano</maintainer>
+
+  <license>MIT</license>
+
+  <url type="repo"></url>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+</package>
