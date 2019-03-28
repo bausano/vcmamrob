@@ -8,7 +8,7 @@ class SensorsWorker(Worker):
   " Constructs new worker instance.
   """
   def __init__(self):
-    super(SensorsWorker, self, '', PointCloud).__init__()
+    super(SensorsWorker, self, '/robotino_node/distance_sensors', PointCloud).__init__()
 
   """
   " @inheritDoc
