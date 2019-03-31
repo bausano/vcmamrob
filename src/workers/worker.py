@@ -42,7 +42,7 @@ class Worker(Thread):
     self.inProgress.set()
 
     # Computes the output
-    self.output = self.handle(message.data)
+    self.output = self.handle(message)
 
     # Signalizes that the output is ready.
     self.ready.set()
