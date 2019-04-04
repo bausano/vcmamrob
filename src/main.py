@@ -22,7 +22,7 @@ if __name__ == '__main__':
   print('✓ Node initialized.')
 
   # Constructs a new publisher instance that emits messages to the turtle
-  robotino = rospy.Publisher('/robotino_node/cmd_vel', Twist, queue_size=50)
+  robotino = rospy.Publisher('/cmd_vel', Twist, queue_size=50)
 
   print('✓ Publisher initialized.')
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
   # Constructs a new rate object on current thread that is used for publishing
   # frequency. There is at most one message published per tick.
-  thread = rospy.Rate(100)
+  thread = rospy.Rate(4)
 
   # Loop that does not exit unless the core was shut down or all targets have
   # been visited.

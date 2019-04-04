@@ -14,6 +14,7 @@ class PositionWorker(Worker):
   " @inheritDoc
   """
   def handle(self, message):
+    print(message.pose.pose)
     return {
       'x': message.pose.pose.position.x,
       'y': message.pose.pose.position.y,
