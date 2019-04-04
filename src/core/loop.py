@@ -8,19 +8,19 @@ PROXIMITY_THRESHOLD = 2.00
 DESTINATION_THRESHOLD = 1.00
 
 def step(target, current, workers):
-  print('Target', target)
-  print('Current', current)
+  # print('Target', target)
+  # print('Current', current)
   angle = determine_angle_for_shortest_path(current, target)
-  print('Angle', angle)
+  # print('Angle', angle)
 
   if angle == -1:
     return -1
 
   circle = create_direction_circle(workers)
-  print('Circle', circle)
+  # print('Circle', circle)
 
   direction = determine_direction(angle, circle)
-  print('Direction', direction)
+  # print('Direction', direction)
 
   # TODO: Transform direction into a ROS cmd_velocity message for robotino.
 
@@ -42,8 +42,8 @@ def step(target, current, workers):
 "         -1 if the target has been reached
 """
 def determine_angle_for_shortest_path(current, target):
-  a = math.fabs(current.x - target.x)
-  b = math.fabs(current.y - target.y)
+  a = math.fabs(current['x'] - target['x'])
+  b = math.fabs(current['y'] - target['y'])
   c = math.hypot(a, b)
 
   return -1 if c < DESTINATION_THRESHOLD else math.cos(b/c)
@@ -92,7 +92,7 @@ def create_direction_circle(workers):
 """
 def get_circular_index(i, circle_size):
   if i >= 0 and i <= circle_size:
-    return i
+    return int(i)
 
   if i > circle_size:
     return get_circular_index(i - circle_size - 1, circle_size)
@@ -109,7 +109,7 @@ def get_circular_index(i, circle_size):
 """
 def determine_direction(angle, circle):
   # Calculates which zone in a circle approximates the angle the best.
-  target = round(angle / (360 / len(circle) * math.pi / 180))
+  target = int(round((angle * 180 / math.pi) / (360 / len(circle))))
   circle_size = len(circle)
 
   # Our search space is number of directions. Since it is a circle, with each
@@ -124,7 +124,7 @@ def determine_direction(angle, circle):
   # 4 | 3 1
   # 5 | 2 2
   #
-  for direction in range(math.ceil(circle_size / 2) + 1):
+  for direction in range(int(math.ceil(circle_size / 2) + 1) + 1):
     # Calculates changes in neighboring directions
     clockwise_index = get_circular_index(target + direction, circle_size)
     clockwise = circle[clockwise_index]

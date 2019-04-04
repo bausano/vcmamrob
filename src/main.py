@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import rospy
 from core.loop import step
@@ -9,7 +9,7 @@ from workers.position import PositionWorker
 
 # ROS Boot.
 if __name__ == '__main__':
-  print('🤖  VCMAMROB is booting!')
+  print('VCMAMROB is booting!')
 
   # List of points the robot has to visit.
   targets = [

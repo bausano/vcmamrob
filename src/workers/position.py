@@ -8,17 +8,15 @@ class PositionWorker(Worker):
   " Constructs new worker instance.
   """
   def __init__(self):
-    super(PositionWorker, self).__init__('/robotino_node/odom', Odometry)
+    super(PositionWorker, self).__init__('/odom', Odometry)
 
   """
   " @inheritDoc
   """
   def handle(self, message):
-    print('Position worker message')
-    rospy.loginfo(message)
-
     return {
-      'x': 0,
-      'y': 0,
+      'x': message.pose.pose.position.x,
+      'y': message.pose.pose.position.y,
+      'w': message.pose.pose.orientation.w,
     }
 
