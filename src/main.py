@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
   # Constructs a new rate object on current thread that is used for publishing
   # frequency. There is at most one message published per tick.
-  thread = rospy.Rate(10)
+  thread = rospy.Rate(100)
 
   # Loop that does not exit unless the core was shut down or all targets have
   # been visited.
