@@ -13,7 +13,7 @@ if __name__ == '__main__':
 
   # List of points the robot has to visit.
   targets = [
-    { 'x': 5, 'y': 5 },
+    { 'x': 0, 'y': 0 },
   ]
 
   # Starts a new node with a random hash appended to its name.
@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
   # Constructs a new rate object on current thread that is used for publishing
   # frequency. There is at most one message published per tick.
-  thread = rospy.Rate(4)
+  thread = rospy.Rate(2)
 
   # Loop that does not exit unless the core was shut down or all targets have
   # been visited.

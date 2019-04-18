@@ -6,25 +6,25 @@ from geometry_msgs.msg import Twist
 PROXIMITY_THRESHOLD = 0.25
 
 # Tolerance on how close to the target the robot needs to be.
-DESTINATION_THRESHOLD = 1.00
+DESTINATION_THRESHOLD = 0.15
 
 def step(target, current, workers):
-  print('Current', current)
+  # print('current', current)
   angle = determine_angle_for_shortest_path(current, target)
-  print('Angle', angle)
+  # print('Angle', angle)
 
-  if angle == -1:
+  if angle == 0:
     return -1
 
   circle = create_direction_circle(workers)
 
   direction = determine_direction(angle, circle)
-  print('Direction', direction)
+  # print('Direction', direction)
 
   message = Twist()
-  message.angular.z = -1
-  # message.linear.x = target['x']
-  # message.linear.y = target['y']
+  # message.angular.z = -1
+  # message.linear.y = -0.05
+  # message.linear.x = -0.05
 
   # TODO: Transform direction into a ROS cmd_velocity message for robotino.
 
@@ -43,14 +43,37 @@ def step(target, current, workers):
 " @param current Point the robot is currently in
 " @param target Point it is trying to get to
 " @return Float representing radians to turn by with respect of the x axis or
-"         -1 if the target has been reached
+"         0 if the target has been reached
 """
 def determine_angle_for_shortest_path(current, target):
   a = math.fabs(current['x'] - target['x'])
   b = math.fabs(current['y'] - target['y'])
   c = math.hypot(a, b)
 
-  return -1 if c < DESTINATION_THRESHOLD else math.cos(b/c)
+  # If we are close enough, return 0.
+  if c < DESTINATION_THRESHOLD:
+    return 0
+
+  # Calculate the angle to get to the target.
+  angle = math.cos(a/c) * 180 / math.pi
+
+  #              |
+  # 180 - angle  | angle
+  #              |
+  # ------------------------
+  #              |
+  # 180 + angle  | -angle
+  #              |
+  if target['x'] > current['x']:
+    if target['y'] > current['y']:
+      return angle
+    else:
+      return -angle
+
+  if target['y'] > current['y']:
+    return 180 - angle
+
+  return 180 + angle
 
 """
 " Polls all workers to contribute to the direction circle that holds information
@@ -82,6 +105,8 @@ def create_direction_circle(workers):
         continue
 
       circle[direction] = min(circle[direction], worker_circle[direction])
+
+  print(circle)
 
   return circle
 
@@ -129,10 +154,10 @@ def determine_direction(angle, circle):
   #
   for direction in range(int(math.ceil(circle_size / 2) + 1) + 1):
     # Calculates changes in neighboring directions
-    clockwise_index = get_circular_index(target + direction, circle_size)
+    clockwise_index = get_circular_index(target + direction, circle_size - 1)
     clockwise = circle[clockwise_index]
 
-    anticlockwise_index = get_circular_index(target - direction, circle_size)
+    anticlockwise_index = get_circular_index(target - direction, circle_size - 1)
     anticlockwise = circle[clockwise_index]
 
     # If neither is larger than the minimum threshold (both have obstacles), go

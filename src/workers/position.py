@@ -14,10 +14,10 @@ class PositionWorker(Worker):
   " @inheritDoc
   """
   def handle(self, message):
-    print(message.pose.pose)
+    # print(message.pose.pose.orientation.z)
+    # print(message.pose.pose.orientation.w)
     return {
-      'x': message.pose.pose.position.x,
-      'y': message.pose.pose.position.y,
-      'w': message.pose.pose.orientation.w,
+      'x': message.pose.pose.position.y,
+      'y': message.pose.pose.position.x,
     }
 
