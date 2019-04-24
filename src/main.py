@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import rospy
+import math
 from core.loop import step
 from geometry_msgs.msg import Twist
 from workers.sensors import SensorsWorker
@@ -9,11 +10,9 @@ from workers.position import PositionWorker
 
 # ROS Boot.
 if __name__ == '__main__':
-  print('VCMAMROB is booting!')
-
   # List of points the robot has to visit.
   targets = [
-    { 'x': 0, 'y': 0 },
+    { 'x': 2, 'y': 0 },
   ]
 
   # Starts a new node with a random hash appended to its name.

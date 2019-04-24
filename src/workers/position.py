@@ -14,8 +14,6 @@ class PositionWorker(Worker):
   " @inheritDoc
   """
   def handle(self, message):
-    # print(message.pose.pose.orientation.z)
-    # print(message.pose.pose.orientation.w)
     return {
       'x': message.pose.pose.position.y,
       'y': message.pose.pose.position.x,

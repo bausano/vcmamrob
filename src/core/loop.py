@@ -3,15 +3,17 @@ from geometry_msgs.msg import Twist
 
 # Defines distance from an obstacle allowed. If a sensor reports distance lower
 # than this float, the direction is disregarded.
-PROXIMITY_THRESHOLD = 0.25
+PROXIMITY_THRESHOLD = 0.5
 
 # Tolerance on how close to the target the robot needs to be.
 DESTINATION_THRESHOLD = 0.15
 
+# Ideally in range <0.25;1>.
+SPEED = 0.25
+
 def step(target, current, workers):
-  # print('current', current)
+  print('Current: ', current)
   angle = determine_angle_for_shortest_path(current, target)
-  # print('Angle', angle)
 
   if angle == 0:
     return -1
@@ -19,16 +21,8 @@ def step(target, current, workers):
   circle = create_direction_circle(workers)
 
   direction = determine_direction(angle, circle)
-  # print('Direction', direction)
 
-  message = Twist()
-  # message.angular.z = -1
-  # message.linear.y = -0.05
-  # message.linear.x = -0.05
-
-  # TODO: Transform direction into a ROS cmd_velocity message for robotino.
-
-  return message
+  return move_in_direction(direction)
 
 """
 " Finds the optimal angle x the robot should take to get to target point from
@@ -170,3 +164,12 @@ def determine_direction(angle, circle):
 
   # TODO: Should stop and notify user about no suitable direction.
   return circle.index(max(circle))
+
+def move_in_direction(direction):
+  print('Direction: ', direction)
+  message = Twist()
+
+  message.linear.y = -math.sin(direction * math.pi / 4.5) * SPEED
+  message.linear.x = math.cos(direction * math.pi / 4.5) * SPEED
+
+  return message
