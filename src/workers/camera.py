@@ -15,14 +15,14 @@ class CameraWorker(Worker):
   " @inheritDoc
   """
   def handle(self, message):
-    image = bgr_to_luma(message)
+    image = self.bgr_to_luma(message)
 
     # TODO: Split image into thirds. Count mow much black is in each part.
     #       The darker, the lesser result. Match it with correct directions.
 
     return [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-  def bgr_to_luma(message):
+  def bgr_to_luma(self, message):
     image = []
     length = len(message.data) / 3
 
