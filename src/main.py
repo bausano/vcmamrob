@@ -6,6 +6,7 @@ import math
 from core.loop import step
 from geometry_msgs.msg import Twist
 from workers.sensors import SensorsWorker
+from workers.camera import CameraWorker
 from workers.position import PositionWorker
 
 # ROS Boot.
@@ -27,6 +28,7 @@ if __name__ == '__main__':
 
   # Booting all worker threads.
   workers = [
+    CameraWorker(),
     SensorsWorker(),
   ]
 
@@ -58,6 +60,8 @@ if __name__ == '__main__':
 
     # Mimics frequency functionality.
     thread.sleep()
+
+    continue
 
     # If the robot reached the target point, pops it out and goes to next one.
     if message == -1:

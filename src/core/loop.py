@@ -12,7 +12,6 @@ DESTINATION_THRESHOLD = 0.15
 SPEED = 0.25
 
 def step(target, current, workers):
-  print('Current: ', current)
   angle = determine_angle_for_shortest_path(current, target)
 
   if angle == 0:
@@ -100,8 +99,6 @@ def create_direction_circle(workers):
 
       circle[direction] = min(circle[direction], worker_circle[direction])
 
-  print(circle)
-
   return circle
 
 """
@@ -166,7 +163,6 @@ def determine_direction(angle, circle):
   return circle.index(max(circle))
 
 def move_in_direction(direction):
-  print('Direction: ', direction)
   message = Twist()
 
   message.linear.y = -math.sin(direction * math.pi / 4.5) * SPEED
