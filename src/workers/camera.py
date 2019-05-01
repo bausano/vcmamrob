@@ -17,11 +17,25 @@ class CameraWorker(Worker):
   def handle(self, message):
     image = self.bgr_to_luma(message)
 
-    # TODO: Split image into thirds. Count mow much black is in each part.
-    #       The darker, the lesser result. Match it with correct directions.
+    # Splits image in thirds. Count mow much black is in each part.
+    thirds = [0, 0, 0]
+
+    for y in range(len(image)):
+      for x in range(message.width):
+        index = floor(x / (message.width / 3))
+
+        thirds[index] = image[y][x]
+
+    print(thirds)
 
     return [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
+  """
+  " Converts raw byte BGR message to multi dimensional LUMA image.
+  "
+  " @param message ROS topic
+  " @return Multi dimensional array of integers
+  """
   def bgr_to_luma(self, message):
     image = []
     length = len(message.data) / 3
