@@ -61,8 +61,6 @@ if __name__ == '__main__':
     # Mimics frequency functionality.
     thread.sleep()
 
-    continue
-
     # If the robot reached the target point, pops it out and goes to next one.
     if message == -1:
       print('✓ Target reached.')

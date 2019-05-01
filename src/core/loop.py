@@ -9,7 +9,7 @@ PROXIMITY_THRESHOLD = 0.5
 DESTINATION_THRESHOLD = 0.15
 
 # Ideally in range <0.25;1>.
-SPEED = 0.25
+SPEED = 0.5
 
 def step(target, current, workers):
   angle = determine_angle_for_shortest_path(current, target)
@@ -159,13 +159,19 @@ def determine_direction(angle, circle):
     # Returns direction that has the least obstacles in the way.
     return clockwise_index if clockwise > anticlockwise else anticlockwise_index
 
-  # TODO: Should stop and notify user about no suitable direction.
   return circle.index(max(circle))
 
 def move_in_direction(direction):
+  print(direction)
+
   message = Twist()
 
-  message.linear.y = -math.sin(direction * math.pi / 4.5) * SPEED
-  message.linear.x = math.cos(direction * math.pi / 4.5) * SPEED
+  y = -math.sin(direction * math.pi / 4.5)
+  x = math.cos(direction * math.pi / 4.5) * SPEED
+
+  if abs(y) > abs(x):
+    message.linear.y = y * SPEED
+  else:
+    message.linear.x = x * SPEED
 
   return message

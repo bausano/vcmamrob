@@ -30,8 +30,6 @@ class CameraWorker(Worker):
     for third in range(3):
       thirds[third] = (thirds[third] / (message.width * message.height / 3)) / 255
 
-    print(thirds) 
-
     return thirds
 
   """
