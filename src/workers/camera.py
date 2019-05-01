@@ -18,17 +18,21 @@ class CameraWorker(Worker):
     image = self.bgr_to_luma(message)
 
     # Splits image in thirds. Count mow much black is in each part.
-    thirds = [0, 0, 0]
+    thirds = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
     for y in range(len(image)):
       for x in range(message.width):
-        index = floor(x / (message.width / 3))
+        index = int(math.floor(x / (message.width / 3)))
 
-        thirds[index] = image[y][x]
+        thirds[min(index, 2)] += image[y][x]
 
-    print(thirds)
+    # Average pixel density.
+    for third in range(3):
+      thirds[third] = (thirds[third] / (message.width * message.height / 3)) / 255
 
-    return [1, 1, 1, 1, 1, 1, 1, 1, 1]
+    print(thirds) 
+
+    return thirds
 
   """
   " Converts raw byte BGR message to multi dimensional LUMA image.
@@ -38,10 +42,9 @@ class CameraWorker(Worker):
   """
   def bgr_to_luma(self, message):
     image = []
-    length = len(message.data) / 3
 
-    for pixel in range(0, length, 3):
-      y = int(math.floor(pixel / message.width))
+    for pixel in range(0, len(message.data), 3):
+      y = int(math.floor(pixel / (message.width * 3)))
       b = ord(message.data[pixel])
       r = ord(message.data[pixel + 1])
       g = ord(message.data[pixel + 2])
