@@ -21,7 +21,8 @@ def step(target, current, workers):
 
   direction = determine_direction(angle, circle)
 
-  return move_in_direction(direction)
+  # return move_in_direction(direction)
+  return move_to_point(target)
 
 """
 " Finds the optimal angle x the robot should take to get to target point from
@@ -162,8 +163,6 @@ def determine_direction(angle, circle):
   return circle.index(max(circle))
 
 def move_in_direction(direction):
-  print(direction)
-
   message = Twist()
 
   y = -math.sin(direction * math.pi / 4.5)
@@ -173,5 +172,13 @@ def move_in_direction(direction):
     message.linear.y = y * SPEED
   else:
     message.linear.x = x * SPEED
+
+  return message
+
+def move_to_point(target):
+  message = Twist()
+  
+  message.linear.y = target['y']
+  message.linear.x = target['x']
 
   return message
